@@ -1,5 +1,5 @@
-import mp3_eq_vol.valume_detection as volume_detection
-import mp3_eq_vol.volume_analysis as volume_analysis
+import mp3_eq_vol.src.volume_fix.volume_detection as volume_detection
+import mp3_eq_vol.src.volume_fix.volume_analysis as volume_analysis
 import os.path
 from subprocess import Popen , PIPE
 from multiprocessing.dummy import Pool
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     print("max  mean volume")
     print(volume_analysis.find_song_with_max_mean_volume(song_list))
     print("max max volume")
-    song_max_volume=volume_analysis.find_song_with_max_max_volume(song_list)
+    song_max_volume= volume_analysis.find_song_with_max_max_volume(song_list)
     print(song_max_volume)
     maximum_volume=song_list[song]["max_volume"]
-    offset_list= volume_analysis.find_volume_offset_based_on_max_max_volume(maximum_volume,song_list)
+    offset_list= volume_analysis.find_volume_offset_based_on_max_max_volume(maximum_volume, song_list)
     set_volume(song_list,offset_list,output_dir)

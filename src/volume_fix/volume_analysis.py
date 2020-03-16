@@ -1,5 +1,3 @@
-import mp3_eq_vol.valume_detection as volume_detection
-
 def find_song_with_max_mean_volume(volume_analysis):
     max=None
     file=None

@@ -48,11 +48,7 @@ class volume_detection():
             files = cls.get_files(path)
             volume_analysis = cls.run_in_parallel(files)
         else:
-            #raise Exception()
-            print(path)
-            print(os.path.isfile(path))
-            print(os.path.isdir(path))
-
+            raise IOError("Input folder or file not found:",path)
         return(volume_analysis)
 
 
