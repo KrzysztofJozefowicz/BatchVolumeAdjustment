@@ -1,5 +1,5 @@
-import mp3_eq_vol.src.volume_fix.volume_detection as volume_detection
-import mp3_eq_vol.src.volume_fix.volume_analysis as volume_analysis
+import mp3_eq_vol.src.volume_fix.detection as volume_detection
+import mp3_eq_vol.src.volume_fix.analysis as volume_analysis
 import os.path
 from subprocess import Popen , PIPE
 from multiprocessing.dummy import Pool

@@ -1,17 +1,20 @@
-import ffmpeg
-import sys
+
 import subprocess
 from multiprocessing.dummy import Pool
 import re
-import os
 
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, isdir
 
 class volume_detection():
     @classmethod
     def get_files(cls,mypath):
-        return [join(mypath,f) for f in listdir(mypath) if isfile(join(mypath, f)) and f[-3:]=="mp3" ]
+        if isfile(mypath)  and mypath[-3:]=="mp3" :
+            return [mypath]
+        elif isdir(mypath):
+            return [join(mypath,f) for f in listdir(mypath) if isfile(join(mypath, f)) and f[-3:]=="mp3" ]
+        else:
+            raise FileNotFoundError
 
     @classmethod
     def get_volume_from_mp3(cls,filename):
@@ -31,7 +34,7 @@ class volume_detection():
         for output in p.imap(cls.get_volume_from_mp3, filenames):  # provide filenames
              for key in output:
                  out[key]=output[key]
-        return(out)
+        return out
 
     @classmethod
     def get_details_from_ffmpeg_output(cls,ffmpeg_output):
@@ -42,14 +45,8 @@ class volume_detection():
 
     @classmethod
     def analyse_volume_from_files(cls,path):
-        if os.path.isfile(path):
-            volume_analysis = cls.run_in_parallel([path])
-        elif os.path.isdir(path):
-            files = cls.get_files(path)
-            volume_analysis = cls.run_in_parallel(files)
-        else:
-            raise IOError("Input folder or file not found:",path)
-        return(volume_analysis)
+        files = cls.get_files(path)
+        return cls.run_in_parallel(files)
 
 
 
