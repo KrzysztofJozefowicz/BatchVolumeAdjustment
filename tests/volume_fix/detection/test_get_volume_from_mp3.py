@@ -12,7 +12,7 @@ def mocked_internals(mocker):
     def get_details_from_ffmpeg_output_mocked(input):
         return {"mean_volume":0 , "max_volume":10}
 
-    mocker.patch('subprocess.check_output', side_effect=return_output_from_subprocess_mocked)
+    mocker.patch('mp3_eq_vol.src.volume_fix.detection.subprocess.check_output', side_effect=return_output_from_subprocess_mocked)
     mocker.patch('mp3_eq_vol.src.volume_fix.detection.volume_detection.get_details_from_ffmpeg_output',side_effect=get_details_from_ffmpeg_output_mocked)
 
 
