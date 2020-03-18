@@ -16,14 +16,14 @@ import pytest
 
 
 @pytest.fixture()
-def mocked_internals(monkeypatch):
+def mocked_internals(mocker):
 
     def is_file_mocked(file):
         if file[-3:]=='mp3' or file[-3:]=='txt':
             return True
         else:
             return False
-    monkeypatch.setattr(detection, 'isfile', is_file_mocked)
+    mocker.patch('mp3_eq_vol.src.volume_fix.detection.isfile', side_effect=is_file_mocked)
 
 
 @pytest.mark.parametrize("return_list_of_files,input_path,asertion",
