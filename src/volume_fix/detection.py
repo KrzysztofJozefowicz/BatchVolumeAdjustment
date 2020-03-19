@@ -39,8 +39,14 @@ class volume_detection():
     @classmethod
     def get_details_from_ffmpeg_output(cls,ffmpeg_output):
         output={}
-        output["mean_volume"]=float(re.search("mean_volume:\s(.*)\sdB",ffmpeg_output)[1])
-        output["max_volume"] =float( re.search("max_volume:\s(.*)\sdB", ffmpeg_output)[1])
+        try:
+            output["mean_volume"]=float(re.search("mean_volume:\s(.*)\sdB",ffmpeg_output)[1])
+        except:
+            output["mean_volume"]=None
+        try:
+            output["max_volume"] =float( re.search("max_volume:\s(.*)\sdB", ffmpeg_output)[1])
+        except:
+            output["max_volume"] = None
         return(output)
 
     @classmethod
@@ -57,12 +63,4 @@ if __name__ == "__main__":
     # for key in out:
     #     print (key,out[key]["mean_volume"],out[key]["max_volume"])
 
-    mypath = 'C:\\pycharm\\mp3_eq_vol\\output\\'
-
-    out2=volume_detection.analyse_volume_from_files(mypath)
-    for key in out:
-        print (key,out[key]["mean_volume"],out[key]["max_volume"])
-    for key in out2:
-        print(key, out2[key]["mean_volume"], out2[key]["max_volume"])
-
-
+    
