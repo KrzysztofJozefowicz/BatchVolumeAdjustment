@@ -8,7 +8,7 @@ from os.path import isfile, join, isdir
 
 class volume_detection():
     @classmethod
-    def get_files(cls,mypath):
+    def get_files(cls,mypath) -> []:
         if isfile(mypath)  and mypath[-3:]=="mp3" :
             return [mypath]
         elif isdir(mypath):
@@ -17,7 +17,7 @@ class volume_detection():
             raise FileNotFoundError
 
     @classmethod
-    def get_volume_from_mp3(cls,filename):
+    def get_volume_from_mp3(cls,filename) -> {}:
         ffmpeg_args=['ffmpeg',  '-i' ,"FILE_PATH_HERE", '-af' ,"volumedetect",  '-f', 'null', '/dev/null']
         ffmpeg_args[2]=filename
         output=subprocess.check_output(ffmpeg_args,stderr=subprocess.STDOUT)
@@ -26,7 +26,7 @@ class volume_detection():
         return tmp
 
     @classmethod
-    def run_in_parallel(cls,filenames):
+    def run_in_parallel(cls,filenames) -> {}:
         out={}
         number_of_processes=5
         p = Pool(number_of_processes)  # specify number of concurrent processes
@@ -37,7 +37,7 @@ class volume_detection():
         return out
 
     @classmethod
-    def get_details_from_ffmpeg_output(cls,ffmpeg_output):
+    def get_details_from_ffmpeg_output(cls,ffmpeg_output) -> {}:
         output={}
         try:
             output["mean_volume"]=float(re.search("mean_volume:\s(.*)\sdB",ffmpeg_output)[1])
@@ -50,7 +50,7 @@ class volume_detection():
         return(output)
 
     @classmethod
-    def analyse_volume_from_files(cls,path):
+    def analyse_volume_from_files(cls,path) ->{}:
         files = cls.get_files(path)
         return cls.run_in_parallel(files)
 
