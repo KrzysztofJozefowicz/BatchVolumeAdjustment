@@ -14,7 +14,7 @@ class volume_detection():
         elif isdir(mypath):
             return [join(mypath,f) for f in listdir(mypath) if isfile(join(mypath, f)) and f[-3:]=="mp3" ]
         else:
-            raise FileNotFoundError
+            raise FileNotFoundError('Input file or folder not found:'+mypath)
 
     @classmethod
     def get_volume_from_mp3(cls,filename) -> {}:
