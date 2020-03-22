@@ -1,17 +1,4 @@
-# happy-path
-
-
-#  analyse_volume_from_files -> zwraca slownik gdzie klucze to slowniki
-
-# run_in_parallel -> dostaje liste plikow, zwraca slownik, gdzie klucze to slowniki
-
-# get_volume_from_mp3 -dostaje sciezke do pliku, zwraca slownik
-
-# get_details_from_ffmpeg_output -> dostaje output z ffmpeg, zwraca slownik z dwoma kluczami
-
-# get_files -> dostaje katalog, zwrawca sciezke do plikow tylko mp3, idac rekursywnie w podkatalogach
 import mp3_eq_vol.src.volume_fix.detection as detection
-
 import pytest
 
 

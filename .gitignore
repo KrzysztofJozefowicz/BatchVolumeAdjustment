@@ -4,3 +4,5 @@ md5sums\.txt
 src/volume_fix/__pycache__/
 
 tests/volume_fix/__pycache__/
+
+tests/__pycache__/
