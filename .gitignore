@@ -1,2 +1,6 @@
 *.mp3
 md5sums\.txt
+
+src/volume_fix/__pycache__/
+
+tests/volume_fix/__pycache__/
