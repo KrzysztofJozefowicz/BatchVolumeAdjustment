@@ -1,6 +1,3 @@
-import pytest
-
-from _pytest import monkeypatch
 import mp3_eq_vol.src.volume_fix.detection as detection
 
 import pytest
