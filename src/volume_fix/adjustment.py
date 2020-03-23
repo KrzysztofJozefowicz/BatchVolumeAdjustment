@@ -8,11 +8,7 @@ from multiprocessing.dummy import Pool
 
 
 def set_volume(song_list,offset_list,output_dir):
-    #set_volume_args=[]
     set_volume_args = ([song,offset_list[song], os.path.join(output_dir,os.path.split(song)[-1])] for song in song_list)
-    # for song in song_list:
-    #     filename=os.path.split(song)[-1]
-    #     set_volume_args.append([song, offset_list[song], os.path.join(output_dir,filename)])
     run_in_parallel(set_volume_args)
 
 def set_volume_to_mp3(args):
