@@ -9,7 +9,7 @@ def mocked_internals(mocker):
         def __init__(self,pools):
             pass
         def imap(self,funct,filenames):
-            out=[ {"a":"a"},{"b":"b"} ]
+            out=[ {"a":"a"},{"b":"b"},None ]
             return out
     mocker.patch('mp3_eq_vol.src.volume_fix.detection.Pool', side_effect=mocked_Pool)
 

@@ -21,9 +21,12 @@ class volume_detection():
         ffmpeg_args=['ffmpeg',  '-i' ,"FILE_PATH_HERE", '-af' ,"volumedetect",  '-f', 'null', '/dev/null']
         ffmpeg_args[2]=filename
         output=subprocess.check_output(ffmpeg_args,stderr=subprocess.STDOUT)
-        tmp={}
-        tmp[filename]=cls.get_details_from_ffmpeg_output(output.decode("utf-8"))
-        return tmp
+
+        ffmpeg_output=cls.get_details_from_ffmpeg_output(output.decode("utf-8"))
+        if ffmpeg_output != None:
+            tmp = {}
+            tmp[filename]=ffmpeg_output
+            return tmp
 
     @classmethod
     def run_in_parallel(cls,filenames) -> {}:
@@ -32,8 +35,9 @@ class volume_detection():
         p = Pool(number_of_processes)  # specify number of concurrent processes
 
         for output in p.imap(cls.get_volume_from_mp3, filenames):  # provide filenames
-             for key in output:
-                 out[key]=output[key]
+                if output !=None:
+                    for key in output:
+                            out[key]=output[key]
         return out
 
     @classmethod
@@ -42,11 +46,11 @@ class volume_detection():
         try:
             output["mean_volume"]=float(re.search("mean_volume:\s(.*)\sdB",ffmpeg_output)[1])
         except:
-            output["mean_volume"]=None
+            return None
         try:
             output["max_volume"] =float( re.search("max_volume:\s(.*)\sdB", ffmpeg_output)[1])
         except:
-            output["max_volume"] = None
+            return None
         return(output)
 
     @classmethod
