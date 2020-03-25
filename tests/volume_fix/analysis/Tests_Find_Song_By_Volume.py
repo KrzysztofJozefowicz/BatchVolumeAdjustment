@@ -72,7 +72,7 @@ class Test_Find_Song_With_Max_Mean_Volume():
 
 class Test_Find_Volume_Offset_Based_On_Max_Max_Volume():
     def test_get_volume_offset_based_on_max_max_volume(self):
-        
+
         songs_offsets=analysis.volume_analysis.find_volume_offset_based_on_max_max_volume(1,songs_details("multiple_songs_multiple_values"))
         assert songs_offsets["file_0.mp3"] == 1
         assert songs_offsets["file_1.mp3"] == 0
