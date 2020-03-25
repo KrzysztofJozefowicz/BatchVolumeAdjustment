@@ -25,9 +25,9 @@ def songs_details(output_type):
 class Test_Analysis_E2E():
     def test_analysis_E2E(self):
         song_list=songs_details("multiple_songs_multiple_values")
-        song_with_max_volume=analysis.volume_analysis.find_song_with_max_max_volume(songs_details("multiple_songs_multiple_values"))
-        max_max_volume=song_list[song_with_max_volume]["max_volume"]
-        songs_offsets=analysis.volume_analysis.find_volume_offset_based_on_max_max_volume(max_max_volume,songs_details("multiple_songs_multiple_values"))
+        max_volume=analysis.volume_analysis.find_max_max_volume(song_list)
+
+        songs_offsets=analysis.volume_analysis.find_volume_offset_based_on_max_max_volume(max_volume,song_list)
         assert songs_offsets["file_0.mp3"] == 1
         assert songs_offsets["file_1.mp3"] == 0
         assert songs_offsets["file_2.mp3"] == 2

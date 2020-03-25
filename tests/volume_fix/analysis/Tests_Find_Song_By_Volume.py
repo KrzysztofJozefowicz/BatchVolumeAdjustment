@@ -29,46 +29,46 @@ def songs_details(output_type):
 
 class Test_Find_Song_With_Max_Max_Volume():
     def test_multiple_songs_multiple_values_(self):
-        out=analysis.volume_analysis.find_song_with_max_max_volume(songs_details("multiple_songs_multiple_values"))
-        assert out == 'file_1.mp3'
+        out=analysis.volume_analysis.find_max_max_volume(songs_details("multiple_songs_multiple_values"))
+        assert out == 1
 
     def test_mutliple_songs_equal_values(self):
-        out = analysis.volume_analysis.find_song_with_max_max_volume(songs_details("multiple_songs_equal_values"))
-        assert out == 'file_1.mp3'
+        out = analysis.volume_analysis.find_max_max_volume(songs_details("multiple_songs_equal_values"))
+        assert out == 0
 
     def test_one_song(self):
-        out = analysis.volume_analysis.find_song_with_max_max_volume(songs_details("only_one_song"))
-        assert out == 'file_1.mp3'
+        out = analysis.volume_analysis.find_max_max_volume(songs_details("only_one_song"))
+        assert out == 0
 
     def test_no_max_volume(self):
         with pytest.raises(ValueError):
-           analysis.volume_analysis.find_song_with_max_max_volume(songs_details("only_one_song_no_max_volume"))
+           analysis.volume_analysis.find_max_max_volume(songs_details("only_one_song_no_max_volume"))
 
     def test_empty_song_list(self):
         with pytest.raises(ValueError):
-            analysis.volume_analysis.find_song_with_max_max_volume(songs_details("empty_song_list"))
+            analysis.volume_analysis.find_max_max_volume(songs_details("empty_song_list"))
 
 
 class Test_Find_Song_With_Max_Mean_Volume():
     def test_multiple_songs_multiple_values_(self):
-        out=analysis.volume_analysis.find_song_with_max_mean_volume(songs_details("multiple_songs_multiple_values"))
-        assert out == 'file_1.mp3'
+        out=analysis.volume_analysis.find_max_mean_volume(songs_details("multiple_songs_multiple_values"))
+        assert out == 0
 
     def test_mutliple_songs_equal_values(self):
-        out = analysis.volume_analysis.find_song_with_max_mean_volume(songs_details("multiple_songs_equal_values"))
-        assert out == 'file_1.mp3'
+        out = analysis.volume_analysis.find_max_mean_volume(songs_details("multiple_songs_equal_values"))
+        assert out == 0
 
     def test_one_song(self):
-        out = analysis.volume_analysis.find_song_with_max_mean_volume(songs_details("only_one_song"))
-        assert out == 'file_1.mp3'
+        out = analysis.volume_analysis.find_max_mean_volume(songs_details("only_one_song"))
+        assert out == 0
 
     def test_no_mean_volume(self):
         with pytest.raises(ValueError):
-           analysis.volume_analysis.find_song_with_max_mean_volume(songs_details("only_one_song_no_mean_volume"))
+           analysis.volume_analysis.find_max_mean_volume(songs_details("only_one_song_no_mean_volume"))
 
     def test_empty_song_list(self):
         with pytest.raises(ValueError):
-            analysis.volume_analysis.find_song_with_max_mean_volume(songs_details("empty_song_list"))
+            analysis.volume_analysis.find_max_mean_volume(songs_details("empty_song_list"))
 
 class Test_Find_Volume_Offset_Based_On_Max_Max_Volume():
     def test_get_volume_offset_based_on_max_max_volume(self):
