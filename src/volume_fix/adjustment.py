@@ -18,9 +18,9 @@ class Adjustment():
             filename , offset_dB, output_filepath = args[0],args[1],args[2],
             ffmpeg_args=['ffmpeg',  '-i' ,"FILE_PATH_HERE", '-filter:a' ,"volume="+str(offset_dB)+"dB", output_filepath ]
             ffmpeg_args[2]=filename
-            p = Popen(ffmpeg_args, stdout=PIPE, stderr=PIPE)
-            stdout, stderr = p.communicate()
-            print(stdout)
+            print("running:",filename)
+            Popen(ffmpeg_args, stdout=PIPE, stderr=PIPE)
+            print("finished:",filename)
 
 
     @classmethod
