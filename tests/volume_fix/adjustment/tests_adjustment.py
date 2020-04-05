@@ -25,8 +25,6 @@ def songs_details(output_type):
 
 @pytest.fixture()
 def run_parallel(mocker):
-    def run_parallel_mocked(args):
-        pass
     run_parallel_stub=mocker.stub()
     mocker.patch('mp3_eq_vol.src.volume_fix.adjustment.Adjustment.run_in_parallel',side_effect=run_parallel_stub)
 
@@ -34,6 +32,16 @@ class Tests_Adjustments_SetVolume():
     def test_set_volume(self,mocker):
         run_parallel_stub = mocker.stub()
         mocker.patch('mp3_eq_vol.src.volume_fix.adjustment.Adjustment.run_in_parallel', side_effect=run_parallel_stub)
-        song_list=songs_details("multiple_songs_multiple_values")
-        adjustment.Adjustment.set_volume(song_list,0,"test")
-        run_parallel_stub.assert_called_once_with()
+        song_list=songs_details("only_one_song")
+        output_dir="test"
+        import os
+        song_offset={"file_1.mp3":0}
+        expected_args =([song, song_offset[song], os.path.join(output_dir, os.path.split(song)[-1])] for song in song_list)
+
+        adjustment.Adjustment.set_volume(song_list,song_offset,output_dir)
+        called_args = run_parallel_stub.call_args_list
+        for call in called_args:
+            args, kwargs = call
+            for arg in args:
+                assert list(expected_args) == list(arg)
+
