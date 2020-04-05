@@ -9,7 +9,7 @@ class volume_analysis():
             raise ValueError("List of songs to analyse empty")
 
         try:
-            return max([x["mean_volume"] for x in volume_analysis.values()])
+            return max(x["mean_volume"] for x in volume_analysis.values())
         except:
             raise ValueError("Key 'mean_volume' not found in one of the song list",volume_analysis)
 
@@ -22,7 +22,7 @@ class volume_analysis():
             raise ValueError("Empty list of songs to analyse")
 
         try:
-            return max([x["max_volume"] for x in volume_analysis.values()])
+            return max(x["max_volume"] for x in volume_analysis.values())
         except:
             raise ValueError("Key 'max_volume' not found in one of the song list", volume_analysis)
 
