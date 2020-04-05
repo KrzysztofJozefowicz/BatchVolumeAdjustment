@@ -4,40 +4,28 @@ class volume_analysis():
 
     @classmethod
     def find_max_mean_volume(cls,volume_analysis) -> float:
-        max=None
 
         if volume_analysis == None or len(volume_analysis) == 0:
             raise ValueError("List of songs to analyse empty")
 
-        for song in volume_analysis:
-            try:
-                if max == None:
+        try:
+            return max([x["mean_volume"] for x in volume_analysis.values()])
+        except:
+            raise ValueError("Key 'mean_volume' not found in one of the song list",volume_analysis)
 
-                    max=volume_analysis[song]["mean_volume"]
-                else:
-                    if volume_analysis[song]["mean_volume"] > max:
 
-                        max = volume_analysis[song]["mean_volume"]
-            except:
-                raise ValueError("Key 'mean_volume' not found in ", song)
-        return max
 
     @classmethod
     def find_max_max_volume(cls,volume_analysis) -> float:
-        max=None
-        if volume_analysis == None or len(volume_analysis) == 0:
-            raise ValueError("List of songs to analyse empty")
 
-        for song in volume_analysis:
-            try:
-                if max == None:
-                    max=volume_analysis[song]["max_volume"]
-                else:
-                    if volume_analysis[song]["max_volume"] > max:
-                        max = volume_analysis[song]["max_volume"]
-            except:
-                raise ValueError("Key 'max_volume' not found in ",song)
-        return max
+        if volume_analysis == None or len(volume_analysis) == 0:
+            raise ValueError("Empty list of songs to analyse")
+
+        try:
+            return max([x["max_volume"] for x in volume_analysis.values()])
+        except:
+            raise ValueError("Key 'max_volume' not found in one of the song list", volume_analysis)
+
 
 
     @classmethod
