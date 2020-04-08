@@ -1,12 +1,39 @@
 
-import subprocess
-from multiprocessing.dummy import Pool
-import re
 
+import re
+import asyncio
 from os import listdir
 from os.path import isfile, join, isdir
 
 class volume_detection():
+    number_of_concurrent_processes = 3
+
+    @classmethod
+    def get_volume_from_mp3_async(cls, files):
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+        loop = asyncio.get_event_loop()
+        semaphore = asyncio.Semaphore(cls.number_of_concurrent_processes)
+        async_tasks = (cls.run_as_async(file, semaphore) for file in files)
+        all_tasks = asyncio.gather(*async_tasks)
+        results = loop.run_until_complete(all_tasks)
+        loop.close()
+        out = {}
+        for output in results:
+            for key in output:
+                out[key] = output[key]
+        return out
+
+    @classmethod
+    async def run_as_async(cls, filename, semaphore):
+        async with semaphore:
+            ffmpeg_args = ['ffmpeg', '-i', "FILE_PATH_HERE", '-af', "volumedetect", '-f', 'null', '/dev/null']
+            ffmpeg_args[2] = filename
+            proc = await asyncio.create_subprocess_exec(*ffmpeg_args, stdout=asyncio.subprocess.PIPE,
+                                                        stderr=asyncio.subprocess.PIPE)
+            stdout, stderr = await proc.communicate()
+            output = cls.get_details_from_ffmpeg_output(stderr.decode("utf-8"))
+            return {filename: output}
+
     @classmethod
     def get_files(cls,mypath) -> []:
         if isfile(mypath)  and mypath[-3:]=="mp3" :
@@ -16,29 +43,6 @@ class volume_detection():
         else:
             raise FileNotFoundError('Input file or folder not found:'+mypath)
 
-    @classmethod
-    def get_volume_from_mp3(cls,filename) -> {}:
-        ffmpeg_args=['ffmpeg',  '-i' ,"FILE_PATH_HERE", '-af' ,"volumedetect",  '-f', 'null', '/dev/null']
-        ffmpeg_args[2]=filename
-        output=subprocess.check_output(ffmpeg_args,stderr=subprocess.STDOUT)
-
-        ffmpeg_output=cls.get_details_from_ffmpeg_output(output.decode("utf-8"))
-        if ffmpeg_output != None:
-            tmp = {}
-            tmp[filename]=ffmpeg_output
-            return tmp
-
-    @classmethod
-    def run_in_parallel(cls,filenames) -> {}:
-        out={}
-        number_of_processes=5
-        p = Pool(number_of_processes)  # specify number of concurrent processes
-
-        for output in p.imap(cls.get_volume_from_mp3, filenames):  # provide filenames
-                if output !=None:
-                    for key in output:
-                            out[key]=output[key]
-        return out
 
     @classmethod
     def get_details_from_ffmpeg_output(cls,ffmpeg_output) -> {}:
@@ -56,7 +60,7 @@ class volume_detection():
     @classmethod
     def analyse_volume_from_files(cls,path) ->{}:
         files = cls.get_files(path)
-        return cls.run_in_parallel(files)
+        return cls.get_volume_from_mp3_async(files)
 
 
 
