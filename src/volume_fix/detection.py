@@ -10,13 +10,19 @@ class volume_detection():
 
     @classmethod
     def get_volume_from_mp3(cls, files):
-        cmd = ['ffmpeg', '-i', "FILE_PATH_HERE", '-af', "volumedetect", '-f', 'null', '/dev/null']
 
-        results = run_async.run_concurent_async(cmd,files)
+        cmd_list=[]
+        for file in files:
+            cmd = ['ffmpeg', '-i', file, '-af', "volumedetect", '-f', 'null', '/dev/null']
+            cmd_list.append(cmd)
+
+        results = run_async.run_concurent_async(cmd_list,files)
         out = {}
         for output in results:
             for key in output:
                 out[key] = cls.get_details_from_ffmpeg_output(output[key])
+                #out key = filename
+                #out value: {mean_volume:[float], max_volume: [float]}
         return out
 
 
@@ -58,7 +64,7 @@ if __name__ == "__main__":
     for key in out:
         print(key)
         print(out[key])
-        exit(0)
+
 #         print (key,out[key]["mean_volume"],out[key]["max_volume"])
 
     

@@ -15,7 +15,7 @@ class Adjustment():
             filename, offset_dB, output_filepath = song, offset_list[song], os.path.join(output_dir, os.path.split(song)[-1])
             task_command=['ffmpeg','-y', '-i', filename, '-filter:a', "volume=" + str(offset_dB) + "dB",output_filepath]
             set_volume_commands.append(task_command)
-        run_async.run_concurent_async_adjust(set_volume_commands)
+        run_async.run_concurent_async(set_volume_commands,[song for song in song_list])
 
 
 if __name__ == "__main__":
