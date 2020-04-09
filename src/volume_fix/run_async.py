@@ -4,7 +4,7 @@ class run_async():
     number_of_concurrent_processes = 3
 
     @classmethod
-    def set_cincurrecy(cls,number_of_concurent_runs):
+    def set_concurrecy(cls,number_of_concurent_runs):
         cls.number_of_concurrent_processes=int(number_of_concurent_runs)
 
     @classmethod
