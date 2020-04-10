@@ -6,7 +6,7 @@ from os.path import isfile, join, isdir
 import re
 
 class volume_detection():
-
+    allowed_file_extensions=set(["mp3"])
 
     @classmethod
     def get_volume_from_mp3(cls, files):
@@ -28,13 +28,20 @@ class volume_detection():
 
 
     @classmethod
-    def get_files(cls,mypath) -> []:
-        if isfile(mypath)  and mypath[-3:]=="mp3" :
-            return [mypath]
-        elif isdir(mypath):
-            return [join(mypath,f) for f in listdir(mypath) if isfile(join(mypath, f)) and f[-3:]=="mp3" ]
-        else:
-            raise FileNotFoundError('Input file or folder not found:'+mypath)
+    def get_files(cls,*file_paths) -> []:
+        files=[]
+        for path in file_paths:
+            if isfile(path)  and path[-3:] in cls.allowed_file_extensions:
+                files.append(path)
+
+            elif isdir(path):
+                for f in listdir(path):
+                    if isfile(join(path, f)) and f[-3:] in cls.allowed_file_extensions:
+                        files.append(join(path, f))
+
+            else:
+                raise FileNotFoundError('Input file or folder not found: '+path)
+        return list(set(files))
 
 
     @classmethod
@@ -51,8 +58,8 @@ class volume_detection():
         return(output)
 
     @classmethod
-    def analyse_volume_from_files(cls,path) ->{}:
-        files = cls.get_files(path)
+    def analyse_volume_from_files(cls,*paths) ->{}:
+        files = cls.get_files(*paths)
         return cls.get_volume_from_mp3(files)
 
 
@@ -60,7 +67,7 @@ class volume_detection():
 if __name__ == "__main__":
     mypath = 'C:\\pycharm\\mp3_eq_vol\\origin\\'
 
-    out=volume_detection.analyse_volume_from_files(mypath)
+    out=volume_detection.analyse_volume_from_files([mypath])
     for key in out:
         print(key)
         print(out[key])
