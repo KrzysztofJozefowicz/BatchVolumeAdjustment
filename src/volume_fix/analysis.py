@@ -22,22 +22,28 @@ class volume_analysis():
             raise ValueError("Empty list of songs to analyse")
 
         try:
-            return max(x["max_volume"] for x in volume_analysis.values())
+            max_values=[]
+            for entry in volume_analysis:
+                if volume_analysis[entry]["max_volume"] is not None and "max_volume" in volume_analysis[entry].keys():
+                    max_values.append(volume_analysis[entry]["max_volume"])
+            return max(max_values)
         except:
             raise ValueError("Key 'max_volume' not found in one of the song list", volume_analysis)
-
-
 
     @classmethod
     def find_volume_offset_based_on_max_max_volume(cls,max_max_volume,volume_analysis) -> dict:
         volume_offset={}
 
         for song in volume_analysis:
-            if max_max_volume>volume_analysis[song]["max_volume"]:
-                volume_gain=max_max_volume-volume_analysis[song]["max_volume"]
-                volume_offset[song] = volume_gain
+            if volume_analysis[song]["max_volume"] != None:
+                if max_max_volume>volume_analysis[song]["max_volume"]:
+                    volume_gain=max_max_volume-volume_analysis[song]["max_volume"]
+                    volume_offset[song] = volume_gain
+                else:
+                    volume_offset[song] = 0
             else:
-                volume_offset[song] = 0
+                volume_offset[song] = None
+
         return volume_offset
 
 

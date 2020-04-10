@@ -50,11 +50,11 @@ class volume_detection():
         try:
             output["mean_volume"]=float(re.search("mean_volume:\s(.*)\sdB",ffmpeg_output)[1])
         except:
-            return None
+            output["mean_volume"]=None
         try:
             output["max_volume"] =float( re.search("max_volume:\s(.*)\sdB", ffmpeg_output)[1])
         except:
-            return None
+            output["max_volume"]=None
         return(output)
 
     @classmethod
