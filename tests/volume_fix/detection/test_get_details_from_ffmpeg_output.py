@@ -43,4 +43,4 @@ class Test_Get_Details_From_FFmpeg_Output():
         size=N/A time=00:09:12.22 bitrate=N/A speed= 173x
         video:0kB audio:103543kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown'''
         output = detection.volume_detection.get_details_from_ffmpeg_output(missing_volume_output)
-        assert output == None
+        assert output == {'max_volume': None, 'mean_volume': None}

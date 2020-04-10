@@ -30,5 +30,5 @@ class Test_Get_Volume_From_mp3():
     def test_get_volume_from_mp3_check_when_ffmpeg_output_returns_None(self, mocked_internals_asyncio_run):
         filename = ["my_file"]
         out = detection.volume_detection.get_volume_from_mp3(filename)
-        assert out["my_file"] == None
+        assert out["my_file"] == {'max_volume': None, 'mean_volume': None}
 

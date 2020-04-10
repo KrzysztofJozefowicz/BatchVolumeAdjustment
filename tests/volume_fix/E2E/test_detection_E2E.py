@@ -24,7 +24,7 @@ class Test_Detection_E2E():
         assert output[song_list['song_1']].keys() == set(['mean_volume', 'max_volume'])
         assert output[song_list['song_1']]['mean_volume'] == -16.4
         assert output[song_list['song_1']]['max_volume'] == -0.2
-        assert output[song_list['song_2']] == None
+        assert output[song_list['song_2']] == {'max_volume': None, 'mean_volume': None}
 
         assert output[song_list['song_3']].keys() == set(['mean_volume', 'max_volume'])
         assert output[song_list['song_3']]['mean_volume'] == -10.4
@@ -39,7 +39,7 @@ class Test_Detection_E2E():
         assert output[song_list['song_1']].keys() == set(['mean_volume', 'max_volume'])
         assert output[song_list['song_1']]['mean_volume'] == -16.4
         assert output[song_list['song_1']]['max_volume'] == -0.2
-        assert output[song_list['song_2']] == None
+        assert output[song_list['song_2']] == {'max_volume': None, 'mean_volume': None}
 
         assert output[song_list['song_3']].keys() == set(['mean_volume', 'max_volume'])
         assert output[song_list['song_3']]['mean_volume'] == -10.4
