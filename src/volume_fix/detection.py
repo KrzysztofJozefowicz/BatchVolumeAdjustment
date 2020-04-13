@@ -1,7 +1,7 @@
 
 
 from mp3_eq_vol.src.volume_fix.run_async import run_async
-import os
+from os import walk
 from os.path import isfile, join, isdir
 import re
 
@@ -33,7 +33,7 @@ class volume_detection():
                 files.append(path)
 
             elif isdir(path):
-                for (dirpath, dirnames, filenames) in os.walk(path):
+                for (dirpath, dirnames, filenames) in walk(path):
                     for f in filenames:
                         if isfile(join(dirpath, f)) and f[-3:] in cls.allowed_file_extensions:
                             files.append(join(dirpath, f))
@@ -57,16 +57,25 @@ class volume_detection():
         return(output)
 
     @classmethod
-    def wrap_input_paths(cls,paths):
-        if type(paths) is str:
-            return [paths]
-        if type(paths) is list:
-            return paths
+    def wrap_input_paths(cls,input_param):
+
+        if type(input_param) is list:
+            return input_param
+
+        if isfile(input_param) and input_param[-3:] == "txt":
+            with open(input_param, 'r') as text_file:
+                return [line.strip() for line in text_file]
+        else:
+            return [input_param]
+
+
+
 
 
     @classmethod
     def analyse_volume_from_files(cls,paths) ->{}:
         paths=cls.wrap_input_paths(paths)
+        print(paths)
 
         files = cls.get_files(*paths)
         return cls.get_volume_from_mp3(files)
