@@ -18,7 +18,7 @@ class Test_Detection_E2E():
 
     def test_list_of_files(self):
         song_list=Test_Detection_E2E.prepare_song_list()
-        output = detection.volume_detection.analyse_volume_from_files(*song_list['3_songs'])
+        output = detection.volume_detection.analyse_volume_from_files(song_list['3_songs'])
 
         assert type(output) == type({})
         assert output[song_list['song_1']].keys() == set(['mean_volume', 'max_volume'])
@@ -32,10 +32,10 @@ class Test_Detection_E2E():
 
     def test_list_of_folders(self):
         song_list=Test_Detection_E2E.prepare_song_list()
-        output = detection.volume_detection.analyse_volume_from_files(*[song_list["test_data_input_folder"]])
+        output = detection.volume_detection.analyse_volume_from_files([song_list["test_data_input_folder"]])
 
         assert type(output) == type({})
-        assert len(output) == 3
+        assert len(output) == 6
         assert output[song_list['song_1']].keys() == set(['mean_volume', 'max_volume'])
         assert output[song_list['song_1']]['mean_volume'] == -16.4
         assert output[song_list['song_1']]['max_volume'] == -0.2

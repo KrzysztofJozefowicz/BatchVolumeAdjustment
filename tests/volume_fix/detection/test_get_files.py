@@ -25,9 +25,11 @@ class Test_Get_Files():
     def test_get_files(self, monkeypatch, return_list_of_files, input_path, assertion, mocked_internals):
 
         def return_list_files_in_dir(path):
-            return return_list_of_files
+            return [(input_path[0],'',return_list_of_files)]
 
-        monkeypatch.setattr(detection, 'listdir', return_list_files_in_dir)
+
+
+        monkeypatch.setattr(detection, 'walk', return_list_files_in_dir)
         assert set(detection.volume_detection.get_files(*input_path)) == set(assertion)
 
     @pytest.mark.parametrize("return_list_of_files,input_path",
@@ -36,7 +38,7 @@ class Test_Get_Files():
 
         def return_list_files_in_dir(path):
             return(return_list_of_files)
-        monkeypatch.setattr(detection, 'listdir', return_list_files_in_dir)
+        monkeypatch.setattr(detection, 'walk', return_list_files_in_dir)
 
         with pytest.raises(Exception):
             detection.volume_detection.get_files(input_path)

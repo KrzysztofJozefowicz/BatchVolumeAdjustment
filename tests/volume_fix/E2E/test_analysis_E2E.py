@@ -18,7 +18,7 @@ class Test_Analysis_E2E():
 
     def test_analysis_E2E(self):
         song_list = Test_Analysis_E2E.prepare_song_list()
-        list_of_songs_with_sound_values = detection.volume_detection.analyse_volume_from_files(*song_list['3_songs'])
+        list_of_songs_with_sound_values = detection.volume_detection.analyse_volume_from_files(song_list['3_songs'])
         max_volume=analysis.volume_analysis.find_max_max_volume(list_of_songs_with_sound_values)
 
         songs_offsets=analysis.volume_analysis.find_volume_offset_based_on_max_max_volume(max_volume,list_of_songs_with_sound_values)
