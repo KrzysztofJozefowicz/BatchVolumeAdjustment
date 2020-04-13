@@ -1,6 +1,8 @@
 import argparse
 import sys
-sys.path.insert(0,'../../..')
+import os
+current_path=os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0,os.path.join(current_path,'../../..'))
 import mp3_eq_vol.src.volume_fix.detection as volume_detection
 import mp3_eq_vol.src.volume_fix.analysis as volume_analysis
 import os.path
@@ -34,6 +36,9 @@ if __name__ == "__main__":
                            help='path to file that holds paths to detect volume stats')
     parser.parse_args()
     args = parser.parse_args()
+    if args.paths is None and args.file is None:
+        print("There should be either --path or --file parameter provided.")
+        exit(-1)
     if os.path.isdir(args.output_dir) == False:
         print("Output dir "+args.output_dir+" does not exist.")
         exit(-1)
