@@ -24,12 +24,12 @@ class Test_Adjustment_E2E():
 
     def test_adjustment_E2E_files_list(self):
         setup = Test_Adjustment_E2E.prepare_song_list()
-        song_list = volume_detection.volume_detection.analyse_volume_from_files(setup['3_songs'])
+        song_list = volume_detection.volume_detection.detect_volume_from_files(setup['3_songs'])
         song_max_volume = volume_analysis.volume_analysis.find_max_max_volume(song_list)
         offset_list = volume_analysis.volume_analysis.find_volume_offset_based_on_max_max_volume(song_max_volume,
                                                                                                  song_list)
         volume_adjustment.Adjustment.set_volume(song_list, offset_list, setup['test_data_output_folder'])
-        post_adjustment_song_list=volume_detection.volume_detection.analyse_volume_from_files([setup['test_data_output_folder']])
+        post_adjustment_song_list=volume_detection.volume_detection.detect_volume_from_files([setup['test_data_output_folder']])
 
         file_list_to_delete=[f for f in os.listdir(setup["test_data_output_folder"])]
         for f in file_list_to_delete:
