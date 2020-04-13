@@ -1,7 +1,7 @@
 
 
 from mp3_eq_vol.src.volume_fix.run_async import run_async
-from os import listdir
+import os
 from os.path import isfile, join, isdir
 import re
 
@@ -21,8 +21,6 @@ class volume_detection():
         for output in results:
             for key in output:
                 out[key] = cls.get_details_from_ffmpeg_output(output[key])
-                #out key = filename
-                #out value: {mean_volume:[float], max_volume: [float]}
         return out
 
 
@@ -35,9 +33,10 @@ class volume_detection():
                 files.append(path)
 
             elif isdir(path):
-                for f in listdir(path):
-                    if isfile(join(path, f)) and f[-3:] in cls.allowed_file_extensions:
-                        files.append(join(path, f))
+                for (dirpath, dirnames, filenames) in os.walk(path):
+                    for f in filenames:
+                        if isfile(join(dirpath, f)) and f[-3:] in cls.allowed_file_extensions:
+                            files.append(join(dirpath, f))
 
             else:
                 raise FileNotFoundError('Input file or folder not found: '+path)
