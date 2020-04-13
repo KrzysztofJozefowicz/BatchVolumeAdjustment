@@ -6,3 +6,19 @@ src/volume_fix/__pycache__/
 tests/volume_fix/__pycache__/
 
 tests/__pycache__/
+
+tests/volume_fix/detection/__pycache__/
+
+tests/volume_fix/htmlcov/
+
+tests/volume_fix/analysis/__pycache__/
+
+tests/volume_fix/adjustment/__pycache__/
+
+tests/volume_fix/run_async/__pycache__/
+
+.coverage
+
+htmlcov/
+
+tests/volume_fix/E2E/__pycache__/
