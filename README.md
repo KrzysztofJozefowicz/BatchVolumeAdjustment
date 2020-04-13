@@ -19,4 +19,5 @@ python adjustment.py --file [file which holds set of path entries] --output_dir 
 
 
 ## Requirements
+[Python3](https://www.python.org/)
 [Ffmpeg](http://ffmpeg.org/) binaries installed and included in path to be called by scripts as "ffmpeg"
