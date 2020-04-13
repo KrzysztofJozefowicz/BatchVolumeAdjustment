@@ -57,7 +57,17 @@ class volume_detection():
         return(output)
 
     @classmethod
-    def analyse_volume_from_files(cls,*paths) ->{}:
+    def wrap_input_paths(cls,paths):
+        if type(paths) is str:
+            return [paths]
+        if type(paths) is list:
+            return paths
+
+
+    @classmethod
+    def analyse_volume_from_files(cls,paths) ->{}:
+        paths=cls.wrap_input_paths(paths)
+
         files = cls.get_files(*paths)
         return cls.get_volume_from_mp3(files)
 
@@ -66,7 +76,7 @@ class volume_detection():
 if __name__ == "__main__":
     mypath = 'C:\\pycharm\\mp3_eq_vol\\origin\\'
 
-    out=volume_detection.analyse_volume_from_files([mypath])
+    out=volume_detection.analyse_volume_from_files(mypath)
     for key in out:
         print(key)
         print(out[key])
