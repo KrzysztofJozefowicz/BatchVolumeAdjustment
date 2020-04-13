@@ -1,9 +1,12 @@
 
+import sys
+from os.path import isfile, join, isdir,pardir
 
+sys.path.insert(0,'../../..')
 from mp3_eq_vol.src.volume_fix.run_async import run_async
 from os import walk
-from os.path import isfile, join, isdir
 import re
+import argparse
 
 class volume_detection():
     allowed_file_extensions=set(["mp3"])
@@ -16,7 +19,9 @@ class volume_detection():
             cmd = ['ffmpeg', '-i', file, '-af', "volumedetect", '-f', 'null', '/dev/null']
             cmd_list.append(cmd)
 
+        print("Running volume detection:")
         results = run_async.run_concurent_async(cmd_list,files)
+        print("Done volume detection.")
         out = {}
         for output in results:
             for key in output:
@@ -57,7 +62,7 @@ class volume_detection():
         return(output)
 
     @classmethod
-    def wrap_input_paths(cls,input_param):
+    def sanitize_input_paths(cls,input_param):
 
         if type(input_param) is list:
             return input_param
@@ -68,28 +73,23 @@ class volume_detection():
         else:
             return [input_param]
 
-
-
-
-
     @classmethod
-    def analyse_volume_from_files(cls,paths) ->{}:
-        paths=cls.wrap_input_paths(paths)
-        print(paths)
-
+    def detect_volume_from_files(cls, paths) ->{}:
+        paths=cls.sanitize_input_paths(paths)
         files = cls.get_files(*paths)
         return cls.get_volume_from_mp3(files)
 
-
-
 if __name__ == "__main__":
-    mypath = 'C:\\pycharm\\mp3_eq_vol\\origin\\'
-
-    out=volume_detection.analyse_volume_from_files(mypath)
-    for key in out:
-        print(key)
-        print(out[key])
-
-#         print (key,out[key]["mean_volume"],out[key]["max_volume"])
-
-    
+    parser = argparse.ArgumentParser()
+    my_parser = parser.add_mutually_exclusive_group()
+    my_parser.add_argument('--paths', nargs='*', help='path to files/folder to detect volume stats')
+    my_parser.add_argument('--file',dest="file", nargs=1,
+                        help='path to file that holds paths to detect volume stats')
+    parser.parse_args()
+    args = parser.parse_args()
+    mypath=args.paths if args.paths != None else args.file[0]
+    if mypath != None:
+        detected_volumes=volume_detection.detect_volume_from_files(mypath)
+        print(detected_volumes)
+        for file in detected_volumes:
+            print(file,'max volume:',detected_volumes[file]["max_volume"],'mean volume:',detected_volumes[file]["mean_volume"])
